@@ -11,20 +11,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckService = void 0;
 class CheckService {
-    constructor() {
+    constructor(successCallback, errorCallback) {
+        this.successCallback = successCallback;
+        this.errorCallback = errorCallback;
     }
     execute(url) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const req = yield fetch(url);
                 if (!req.ok) {
-                    throw new Error(`Error on check service${url}`);
+                    throw new Error(`Error on check service ${url}`);
                 }
-                console.log(`${url} is ok`);
+                this.successCallback(true);
+                // console.log(`${url} is ok`);
                 return true;
             }
             catch (error) {
                 console.log(`${error}`);
+                this.errorCallback(`${error}`);
                 return false;
             }
         });
